@@ -215,6 +215,15 @@ const App = (() => {
 
     /* ---- snowball / money management ---- */
     setScenario(el) { state.scenario = Number(el.dataset.i); render(); },
+    setGoalTarget(el) {
+      if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));
+      const v = parseFloat((el.value || '').replace(/[,\s$]/g, ''));
+      if (!isNaN(v) && v > 0) { db.money.goalTarget = Math.round(v); save(); render(); }
+    },
+    setGoalRate(el) {
+      if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));
+      db.money.goalRate = Number(el.dataset.r); save(); render();
+    },
     editMoney: () => UI.sheet(Views.moneyForm()),
     saveMoney() {
       if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));
@@ -268,6 +277,10 @@ const App = (() => {
     const pk = ev.target.closest('[data-pick]'); if (pk) { A.pick(pk); return; }
     const el = ev.target.closest('[data-act]'); if (!el) return;
     const fn = A[el.dataset.act]; if (fn) { ev.preventDefault(); fn(el, ev); }
+  });
+  document.addEventListener('change', ev => {
+    const el = ev.target.closest('[data-change]'); if (!el) return;
+    const fn = A[el.dataset.change]; if (fn) fn(el, ev);
   });
 
   function applyTheme() { document.documentElement.setAttribute('data-theme', 'dark'); } // siempre oscuro (a juego con la landing)

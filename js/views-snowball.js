@@ -42,8 +42,40 @@ window.Views = window.Views || {};
       <div class="muted small mt12">Base: tu payout promedio (${UI.usd(base)}). Edita los % para ajustarlo a tu realidad.</div>
     </div>`;
 
-    return `<div class="page">${hero}${reparto}${growthPlan(perMonth, allocs)}${portfolio()}<div class="spacer"></div></div>`;
+    return `<div class="page">${hero}${reparto}${growthPlan(perMonth, allocs)}${goalCalc(perMonth, allocs)}${portfolio()}<div class="spacer"></div></div>`;
   };
+
+  // -------- calculadora de meta: pon un monto → cuánto/mes y en cuánto tiempo --------
+  function goalCalc(perMonth, allocs) {
+    const m = money();
+    const target = Math.round(m.goalTarget || 1000000);
+    const rate = m.goalRate || 10;
+    const r = rate / 100 / 12;
+    const investPct = allocs.filter(a => a.id === 'invest' || a.id === 'reinvest').reduce((s, a) => s + a.pct, 0);
+    const myContrib = Math.round(perMonth * investPct / 100);
+    const pmtFor = n => (r > 0 ? target * r / (Math.pow(1 + r, n) - 1) : target / n);
+    const rows = [5, 10, 15, 20, 25, 30].map(Y =>
+      `<div class="goal-row"><span class="gr-yr">En ${Y} años</span><b class="gr-amt">${UI.usd(pmtFor(Y * 12))}<small>/mes</small></b></div>`).join('');
+    let current = '';
+    if (myContrib > 0 && target > 0) {
+      const n = Math.log(1 + target * r / myContrib) / Math.log(1 + r);
+      const years = n / 12;
+      current = `Con tu aporte actual de <b>${UI.usd(myContrib)}/mes</b> llegas a <b>${UI.usd(target)}</b> en <b>~${years.toFixed(1)} años</b> (a ${rate}% anual).`;
+    }
+    const tiers = [8, 10, 12, 15].map(rt => `<button class="tier ${rt === rate ? 'on' : ''}" data-act="setGoalRate" data-r="${rt}">${rt}%</button>`).join('');
+    return `<div class="card">
+      <div class="card-head"><div class="ch-t">${UI.icon('target', '', 18)} Calculadora de meta</div></div>
+      <p class="muted small mb12">Pon cuánto quieres llegar a tener y te digo cuánto invertir al mes — y en cuánto tiempo lo logras.</p>
+      <div class="goal-top">
+        <label class="pc-field"><span class="muted small">Tu meta</span><div class="pc-in"><span class="pc-cur">$</span><input class="input" data-change="setGoalTarget" value="${target}" inputmode="numeric" autocomplete="off" /></div></label>
+        <div class="goal-rate"><span class="muted small">Rendimiento anual</span><div class="tiers">${tiers}</div></div>
+      </div>
+      <div class="step-lbl mt12">Cuánto invertir al mes para llegar a ${UI.usd(target)}:</div>
+      <div class="goal-grid">${rows}</div>
+      ${current ? `<div class="goal-current mt12">${UI.icon('snow', '', 15)} ${current}</div>` : ''}
+      <div class="disc muted small mt12">Cálculo con interés compuesto (aportes mensuales). Cifras ilustrativas.</div>
+    </div>`;
+  }
 
   // -------- Cartera (flujo del mes + gastos personalizables) --------
   function carteraBlock() {

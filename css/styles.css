@@ -1168,3 +1168,15 @@ html[data-theme="dark"] .lp .lp-card, html[data-theme="dark"] .lp .lp-mod, html[
 .onb .center { text-align: center; }
 .onb-demo { display: block; margin: 16px auto 0; color: var(--muted); font-size: .85rem; text-decoration: underline; text-underline-offset: 3px; }
 .onb-demo:hover { color: var(--txt); }
+
+/* ---- calculadora de meta ---- */
+.goal-top { display: flex; gap: 26px; flex-wrap: wrap; align-items: flex-end; }
+.goal-rate { display: flex; flex-direction: column; gap: 6px; }
+.goal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.goal-row { background: rgba(150,190,240,.05); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.gr-yr { font-size: .78rem; color: var(--muted); }
+.gr-amt { display: block; font-family: var(--display); font-weight: 800; font-size: 1.18rem; color: var(--cyan); margin-top: 3px; }
+.gr-amt small { font-size: .68rem; color: var(--muted); font-weight: 600; }
+.goal-current { display: flex; align-items: flex-start; gap: 8px; background: rgba(95,208,255,.08); border: 1px solid rgba(95,208,255,.25); border-radius: 12px; padding: 12px 14px; font-size: .88rem; line-height: 1.5; }
+.goal-current .ic { color: var(--cyan); flex: none; margin-top: 2px; }
+@media (max-width: 640px) { .goal-grid { grid-template-columns: 1fr 1fr; } }

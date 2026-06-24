@@ -183,6 +183,8 @@ const Data = (() => {
   const MONEY = {
     base: 955, // monto promedio por payout (se recalcula con tus payouts reales)
     payoutsMes: 4,
+    goalTarget: 1000000, // meta de patrimonio (calculadora)
+    goalRate: 10,        // rendimiento anual asumido para la meta
     allocations: [
       { id: 'reinvest', name: 'Reinversión en fondeo', pct: 30, color: '#5fd0ff', icon: 'sync', desc: 'Más cuentas → más payouts' },
       { id: 'invest', name: 'Inversión (Portafolio IA 2040)', pct: 30, color: '#7fb0ff', icon: 'chart', desc: 'Interés compuesto a 20-30 años' },

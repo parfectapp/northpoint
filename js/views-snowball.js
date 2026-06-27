@@ -42,40 +42,8 @@ window.Views = window.Views || {};
       <div class="muted small mt12">Base: tu payout promedio (${UI.usd(base)}). Edita los % para ajustarlo a tu realidad.</div>
     </div>`;
 
-    return `<div class="page">${hero}${reparto}${expenseBreakdown()}${portfolio()}<div class="spacer"></div></div>`;
+    return `<div class="page">${hero}${reparto}${portfolio()}<div class="spacer"></div></div>`;
   };
-
-  // -------- Desglose de gastos por sección (categoría) --------
-  function expenseBreakdown() {
-    const exps = Q.expenses();
-    const total = Q.expensesTotal();
-    const LBL = { home: 'Casa', wallet: 'Comida', car: 'Coche', star: 'Suscripciones', flame: 'Gustos', shield: 'Seguros', coin: 'Otros' };
-    const COL = { home: '#5fd0ff', wallet: '#7fb0ff', car: '#ffd24a', star: '#22c55e', flame: '#a855f7', shield: '#06b6d4', coin: '#8a97a8' };
-    const groups = {};
-    exps.forEach(e => { const k = LBL[e.icon] ? e.icon : 'coin'; (groups[k] = groups[k] || { amount: 0, items: [] }); groups[k].amount += (e.amount || 0); groups[k].items.push(e); });
-    const rows = Object.keys(groups).map(k => ({ k, amount: groups[k].amount, items: groups[k].items })).sort((a, b) => b.amount - a.amount);
-    const max = Math.max(...rows.map(r => r.amount), 1);
-    const segs = rows.map(r => ({ pct: total > 0 ? Math.round(r.amount / total * 100) : 0, color: COL[r.k] }));
-
-    const list = rows.map(r => {
-      const color = COL[r.k], pct = total > 0 ? Math.round(r.amount / total * 100) : 0;
-      return `<div class="gx-row">
-        <div class="gx-top"><span class="gx-name"><span class="gx-dot" style="background:${color}"></span>${LBL[r.k]} <span class="muted small">· ${r.items.length} gasto${r.items.length !== 1 ? 's' : ''}</span></span>
-          <span class="gx-amt"><b>${UI.usd(r.amount)}</b> <span class="muted small">${pct}%</span></span></div>
-        ${UI.bar(r.amount, max, color)}
-        <div class="gx-items">${r.items.map(e => `<span class="gx-chip">${UI.esc(e.name)} · ${UI.usd(e.amount)}</span>`).join('')}</div>
-      </div>`;
-    }).join('');
-
-    return `<div class="card">
-      <div class="card-head"><div class="ch-t">${UI.icon('pie', '', 18)} Desglose de gastos por sección</div>
-        <button class="link" data-act="go" data-route="cartera">${exps.length ? 'Editar en Cartera' : '+ Agregar'}</button></div>
-      ${exps.length ? `<div class="pie-row">
-        <div class="pie-wrap">${UI.pie(segs, 200)}<div class="pie-center"><b>${UI.usd(total)}</b><span class="muted small">al mes</span></div></div>
-        <div class="gx-list">${list}</div>
-      </div>` : UI.empty('wallet', 'Sin gastos todavía', 'Agrégalos en Cartera para ver el desglose por sección.')}
-    </div>`;
-  }
 
   // -------- calculadora de meta: pon un monto → cuánto/mes y en cuánto tiempo --------
   function goalCalc(perMonth, allocs) {

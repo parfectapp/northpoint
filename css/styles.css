@@ -1219,3 +1219,18 @@ html[data-theme="dark"] .lp .lp-card, html[data-theme="dark"] .lp .lp-mod, html[
 .lockwrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .lockcard { width: 100%; max-width: 360px; background: #0d1726; border: 1px solid var(--line); border-radius: 20px; padding: 32px 26px; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
 .lock-logo { display: flex; justify-content: center; margin-bottom: 14px; }
+
+/* Plan de crecimiento ajustable */
+.gp-grid { display: flex; flex-direction: column; gap: 14px; }
+.gp-out { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gpo { background: rgba(150,190,240,.05); border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px; display: flex; flex-direction: column; gap: 4px; }
+.gpo.big { background: linear-gradient(180deg, rgba(95,208,255,.14), rgba(95,208,255,.05)); border-color: rgba(95,208,255,.32); }
+.gpo-lbl { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--muted); font-weight: 600; }
+.gpo-lbl .ic { color: var(--cyan); }
+.gpo-v { font-family: var(--display); font-weight: 800; font-size: 1.5rem; line-height: 1.1; }
+.gpo-v small { font-size: .8rem; color: var(--muted); font-weight: 600; }
+.gpo-v.ice { color: var(--cyan); }
+.gpo-sub { font-size: .8rem; color: var(--muted); line-height: 1.4; }
+.cartera-need { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; background: rgba(95,208,255,.08); border: 1px solid rgba(95,208,255,.25); border-radius: 12px; padding: 12px 14px; font-size: .88rem; line-height: 1.5; }
+.cartera-need .ic { color: var(--cyan); flex: none; margin-top: 2px; }
+@media (max-width: 640px) { .gp-out { grid-template-columns: 1fr; } }

@@ -189,6 +189,8 @@ window.Views = window.Views || {};
     const inc = Q.monthlyIncome(), exp = Q.expensesTotal(), free = Q.freeCash(), rate = Q.savingsRate();
     const st = Q.stats(Q.allTrades());
     const expenses = Q.expenses(), pieSegs = Q.expensesPie();
+    const avg = Q.avgPayout() > 0 ? Q.avgPayout() : (Q.money().base || 0);
+    const payoutsForExp = avg > 0 && exp > 0 ? Math.ceil(exp / avg) : 0;
 
     const summary = `<div class="card snow-card glass">
       <div class="snow-card-l">
@@ -224,6 +226,7 @@ window.Views = window.Views || {};
           <span class="exp-ic" style="background:${(e.color || '#5fd0ff')}22;color:${e.color || '#5fd0ff'}">${UI.icon(e.icon || 'wallet', '', 16)}</span>
           <span class="exp-name">${UI.esc(e.name)}</span><span class="exp-amt">${UI.usd(e.amount)}</span></button>`).join('')}</div>
       </div>` : UI.empty('wallet', 'Sin gastos todavía', 'Agrega tus gastos fijos para ver tu flujo.')}
+      ${exp > 0 ? `<div class="cartera-need">${UI.icon('coin', '', 16)} <span>Para cubrir tus gastos de <b>${UI.usd(exp)}/mes</b> necesitas generar ≈ <b>${payoutsForExp} payout${payoutsForExp !== 1 ? 's' : ''} al mes</b> (de ${UI.usd(avg)} c/u). Lo que generes de más es crecimiento.</span></div>` : ''}
     </div>`;
 
     return `<div class="page">${summary}${rentab}${gastos}<div class="spacer"></div></div>`;

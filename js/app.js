@@ -382,6 +382,10 @@ const App = (() => {
       if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));
       db.money.goalRate = Number(el.dataset.r); save(); render();
     },
+    setGoalYears(el) {
+      if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));
+      db.money.goalYears = Number(el.dataset.y); save(); render();
+    },
     editMoney: () => UI.sheet(Views.moneyForm()),
     saveMoney() {
       if (!db.money) db.money = JSON.parse(JSON.stringify(Data.MONEY));

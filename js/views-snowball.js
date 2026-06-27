@@ -157,38 +157,45 @@ window.Views = window.Views || {};
     return flujo + gastos;
   }
 
-  // -------- plan de crecimiento --------
+  // -------- plan de crecimiento (ajustable: meta → payout a generar + ahorro) --------
   function growthPlan(perMonth, allocs) {
-    const sc = Data.PORTFOLIO.scenarios;
-    const idx = Math.min(sc.length - 1, App.scenario);
-    const chosen = sc[idx];
+    const m = money();
+    const goal = Math.round(m.goalTarget || 1000000);
+    const years = m.goalYears || 10;
+    const rate = m.goalRate || 10;
     const investPct = allocs.filter(a => a.id === 'invest' || a.id === 'reinvest').reduce((s, a) => s + a.pct, 0);
-    const myContrib = Math.round(perMonth * investPct / 100);
+    const avg = baseAmt();
+    const i = rate / 100 / 12, n = years * 12;
 
-    // curva compuesta ilustrativa (20 años, 10% anual)
-    const r = 0.10 / 12; let cap = 0; const pts = [];
-    for (let mo = 1; mo <= 240; mo++) { cap = cap * (1 + r) + chosen.monthly; if (mo % 12 === 0) pts.push(cap); }
+    // inversión mensual requerida para llegar a la meta (anualidad con interés compuesto)
+    const monthlySave = Math.round(i > 0 ? goal * i / (Math.pow(1 + i, n) - 1) : goal / n);
+    const payoutMonthly = investPct > 0 ? Math.round(monthlySave * 100 / investPct) : 0; // payout total/mes a generar
+    const payoutsPerMonth = avg > 0 ? payoutMonthly / avg : 0;
+    const perPayoutSave = Math.round(avg * investPct / 100);
 
-    const tiers = sc.map((s, i) => `<button class="tier ${i === idx ? 'on' : ''}" data-act="setScenario" data-i="${i}">$${s.monthly.toLocaleString('en-US')}/mes</button>`).join('');
-    const rateInfo = { 8: 'Conservador', 10: 'Mercado · S&P 500', 12: 'Agresivo', 15: 'Muy agresivo' };
-    const rates = [8, 10, 12, 15].map(rt => `<div class="rate">
-      <div class="rate-top"><span class="rate-r">${rt}%</span><span class="rate-yr">al año</span></div>
-      <div class="rate-desc">${rateInfo[rt]}</div>
-      <b class="rate-v">${chosen.r[rt]}</b>
-      <span class="rate-sub">acumulado</span>
-    </div>`).join('');
+    // curva al objetivo
+    const pts = []; let cap = 0; const step = Math.max(1, Math.round(n / 12));
+    for (let mo = 1; mo <= n; mo++) { cap = cap * (1 + i) + monthlySave; if (mo % step === 0 || mo === n) pts.push(cap); }
+
+    const yearTiers = [3, 5, 10, 15, 20].map(y => `<button class="tier ${y === years ? 'on' : ''}" data-act="setGoalYears" data-y="${y}">${y} años</button>`).join('');
+    const rateTiers = [8, 10, 12, 15].map(rt => `<button class="tier ${rt === rate ? 'on' : ''}" data-act="setGoalRate" data-r="${rt}">${rt}%</button>`).join('');
 
     return `<div class="card">
       <div class="card-head"><div class="ch-t">${UI.icon('snow', '', 18)} Plan de crecimiento Snowball</div></div>
-      <div class="step-lbl">1 · ¿Cuánto inviertes al mes?</div>
-      <div class="tiers">${tiers}</div>
-      <div class="muted small mt6">Según tu reparto actual inviertes ≈ <b>${UI.usd(myContrib)}/mes</b>.</div>
-      <div class="step-lbl mt12">2 · Lo que tendrías acumulado en 20-30 años, según el rendimiento anual:</div>
-      <div class="snow-proj">
-        <div class="proj-chart">${UI.areaChart(pts, '#5fd0ff')}<div class="muted small">Proyección · ${chosen.aportado} aportado en total</div></div>
-        <div class="proj-rates"><div class="rates">${rates}</div></div>
+      <p class="muted small mb12">Pon tu meta y te digo cuánto payout debes generar y cuánto se ahorra al mes para lograrla.</p>
+      <div class="gp-grid">
+        <label class="pc-field"><span class="muted small">Tu meta</span><div class="pc-in"><span class="pc-cur">$</span><input class="input" data-change="setGoalTarget" value="${goal}" inputmode="numeric" autocomplete="off" /></div></label>
+        <div class="goal-rate"><span class="muted small">¿En cuánto tiempo?</span><div class="tiers">${yearTiers}</div></div>
+        <div class="goal-rate"><span class="muted small">Rendimiento anual</span><div class="tiers">${rateTiers}</div></div>
       </div>
-      <div class="disc muted small mt12">Cifras ilustrativas con interés compuesto. No es asesoría financiera; la inversión implica riesgo.</div>
+      <div class="gp-out mt12">
+        <div class="gpo big"><span class="gpo-lbl">${UI.icon('coin', '', 15)} Payout que debes generar</span><b class="gpo-v">${UI.usd(payoutMonthly)}<small>/mes</small></b><span class="gpo-sub">≈ <b>${payoutsPerMonth.toFixed(1)} payouts al mes</b> de ${UI.usd(avg)} c/u</span></div>
+        <div class="gpo"><span class="gpo-lbl">${UI.icon('snow', '', 15)} Lo que se ahorra / invierte</span><b class="gpo-v ice">${UI.usd(monthlySave)}<small>/mes</small></b><span class="gpo-sub">${investPct}% de cada payout (≈ ${UI.usd(perPayoutSave)} c/u)</span></div>
+      </div>
+      <div class="snow-proj mt12">
+        <div class="proj-chart">${UI.areaChart(pts, '#5fd0ff')}<div class="muted small">Camino a ${UI.usd(goal)} en ${years} años (a ${rate}% anual)</div></div>
+      </div>
+      <div class="disc muted small mt12">Cálculo con interés compuesto (aportes mensuales). Cifras ilustrativas; no es asesoría financiera.</div>
     </div>`;
   }
 

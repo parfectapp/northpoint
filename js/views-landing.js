@@ -150,8 +150,28 @@ window.Views = window.Views || {};
       <p class="lp-disc">El trading de futuros implica riesgo de pérdida. Los resultados pasados no garantizan resultados futuros. Este contenido es educativo y no constituye asesoría financiera.</p>
     </footer>`;
 
-    return `<div class="lp np">${nav}${heroSky()}${appShowcase()}${seaBottom()}</div>`;
+    return `<div class="lp np">${nav}${heroSky()}${appShowcase()}${featureGrid()}${seaBottom()}</div>`;
   };
+
+  // -------- TODO LO QUE HAY: grid de funciones --------
+  function featureGrid() {
+    const items = [
+      ['candles', 'Journal de trades', 'Cada operación: símbolo, lado, P&L, setup, cómo operaste y notas.'],
+      ['cal', 'Calendario de P&L', 'Tu mes en verde y rojo. La verdad de tu consistencia, día a día.'],
+      ['image', 'Fotos y videos del setup', 'Adjunta el screenshot o video de tu gráfico a cada trade y a tu bitácora.'],
+      ['building', 'Cuentas de fondeo', 'Controla tus cuentas Apex / Tradeify por fase y registra cada payout.'],
+      ['snow', 'Snowball', 'Reparte cada payout: reinversión, inversión, gastos, reserva y gusto.'],
+      ['wallet', 'Cartera', 'Tus gastos del mes y cuántos payouts necesitas generar para cubrirlos.'],
+      ['academy', 'Academia', 'El curso "De Cero a Payout": 8 módulos con video y tu progreso.'],
+      ['shield', 'Plan & disciplina', 'Rutina NY, tus reglas, el contrato del trader, checklist y bitácora.'],
+      ['sync', 'Sync en vivo', 'Conecta tu cuenta y sincroniza tus trades reales en automático.'],
+      ['lock', 'Privado y offline', 'Candado con contraseña, tus datos en tu dispositivo y funciona sin internet.'],
+    ];
+    return `<section class="np-grid-sec">
+      <div class="np-showcase-intro"><span class="nf-eyebrow">TODO ADENTRO</span><h2>Todo lo que hay en tu brújula.</h2></div>
+      <div class="np-fgrid">${items.map(x => `<div class="np-fcard">${UI.icon(x[0], '', 22)}<h3>${x[1]}</h3><p>${x[2]}</p></div>`).join('')}</div>
+    </section>`;
+  }
 
   // ====================== HERO NORTHPOINT (día + estrella + mar + marinero) ======================
   function gulls() {
@@ -240,7 +260,7 @@ window.Views = window.Views || {};
         <h2>Una brújula para tu trading.<br>Conforme bajas, la conoces.</h2>
       </div>
       ${feature('JOURNAL', 'Cada trade, en tu calendario.', 'Dashboard con tu P&amp;L, profit factor y win rate. El calendario verde/rojo que te dice la verdad, día a día.', shotDashboard(), false)}
-      ${feature('SNOWBALL · INTEGRADO', 'Tu dinero, en piloto automático.', 'Snowball y tu cartera, juntos: reparte cada payout, controla tus gastos del mes y proyecta tu patrimonio a 20-30 años.', shotSnowball(), true)}
+      ${feature('SNOWBALL · INTEGRADO', 'Tu dinero, en piloto automático.', 'Snowball y tu cartera, juntos: reparte cada payout, controla tus gastos del mes y mira cuántos payouts necesitas para cubrirlos.', shotSnowball(), true)}
       ${feature('ACADEMIA', 'El curso completo, adentro.', 'De Cero a Payout: 8 módulos con tu rutina NY, ORB, gestión de riesgo y el embudo Eval → Buffer → Payout.', shotAcademia(), false)}
     </section>`;
   }

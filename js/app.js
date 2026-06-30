@@ -14,6 +14,7 @@ const App = (() => {
     { group: 'JOURNAL' },
     { r: 'dashboard', ic: 'grid', label: 'Dashboard' },
     { r: 'trades', ic: 'candles', label: 'Trades' },
+    { r: 'coach', ic: 'cockpit', label: 'Coach IA' },
     { r: 'calendario', ic: 'cal', label: 'Calendario' },
     { r: 'cuentas', ic: 'building', label: 'Cuentas' },
     { group: 'TÚ' },
@@ -21,7 +22,7 @@ const App = (() => {
     { r: 'cartera', ic: 'wallet', label: 'Cartera' },
     { r: 'plan', ic: 'shield', label: 'Plan' },
   ];
-  const TITLES = { inicio: 'Inicio', academia: 'Academia', lesson: 'Academia', dashboard: 'Journal · Dashboard', trades: 'Trades', calendario: 'Calendario', cuentas: 'Cuentas', snowball: 'Snowball · Money Management', cartera: 'Cartera', plan: 'Plan & Disciplina' };
+  const TITLES = { inicio: 'Inicio', academia: 'Academia', lesson: 'Academia', dashboard: 'Journal · Dashboard', trades: 'Trades', coach: 'Coach · Análisis de tu operativa', calendario: 'Calendario', cuentas: 'Cuentas', snowball: 'Snowball · Money Management', cartera: 'Cartera', plan: 'Plan & Disciplina' };
 
   function sidebar() {
     const name = db.meta.name || 'Trader';

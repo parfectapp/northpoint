@@ -1,5 +1,5 @@
 /* RACHA · service worker — cache-first del shell para que abra sin internet */
-const CACHE = 'racha-v41';
+const CACHE = 'racha-v42';
 const ASSETS = [
   './', './index.html',
   './css/styles.css',

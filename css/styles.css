@@ -1222,6 +1222,9 @@ html[data-theme="dark"] .lp .lp-card, html[data-theme="dark"] .lp .lp-mod, html[
 .np-price-list .ic { color: #6fd08a; flex: none; margin-top: 1px; }
 .np-price-guar { display: flex; align-items: center; justify-content: center; gap: 7px; color: #9fc0df; font-size: .78rem; margin-top: 14px; }
 .np-price-guar .ic { color: #6fc1ff; }
+.np-price-alt { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 10px; color: #8fb2d4; font-size: .82rem; text-decoration: none; transition: color .15s; }
+.np-price-alt:hover { color: #cfe3f5; }
+.np-price-alt .ic { color: #6fd08a; }
 .np-faq { max-width: 720px; margin: 24px auto 0; text-align: left; display: flex; flex-direction: column; gap: 10px; }
 .np-faq-i { background: rgba(255,255,255,.05); border: 1px solid rgba(140,180,230,.18); border-radius: 14px; padding: 0 18px; }
 .np-faq-i summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; list-style: none; padding: 15px 0; font-family: var(--display); font-weight: 600; color: #eef4ff; font-size: .98rem; }

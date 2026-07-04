@@ -7,11 +7,13 @@ window.Views = window.Views || {};
   const CFG = {
     whatsapp: '524434405815',          // tu número con código de país (sin +)
     waMsg: 'Hi André, I want to join the Zero to Payout course 🚀',
+    checkout: '',                      // ← PEGA AQUÍ tu link de pago (Stripe Payment Link / Gumroad / Lemon Squeezy / MercadoPago / Hotmart). Vacío = los botones de compra van a WhatsApp. Ver PAGOS.md
     price: 4990,                        // precio en MXN
     priceOld: 7990,
     spots: 50,
   };
   const wa = () => `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(CFG.waMsg)}`;
+  const buy = () => CFG.checkout || wa();   // botón de compra: link de pago si existe, si no WhatsApp
   const mxn = n => '$' + (n).toLocaleString('es-MX');
 
   const stat = (v, k) => `<div class="lp-stat"><div class="lp-stat-v">${v}</div><div class="lp-stat-k">${k}</div></div>`;
@@ -225,8 +227,9 @@ window.Views = window.Views || {};
               <li>${UI.icon('check', '', 15)} Certificate of completion</li>
               <li>${UI.icon('check', '', 15)} 30-day money-back guarantee</li>
             </ul>
-            <a class="lp-btn gold full" href="${wa()}" target="_blank" rel="noopener">${UI.icon('wapp', '', 18)} Enroll now</a>
+            <a class="lp-btn gold full" href="${buy()}" target="_blank" rel="noopener">${UI.icon('lock', '', 17)} Enroll now — $249 →</a>
             <div class="np-price-guar">${UI.icon('shield', '', 14)} 30-day money-back guarantee · secure checkout</div>
+            <a class="np-price-alt" href="${wa()}" target="_blank" rel="noopener">${UI.icon('wapp', '', 15)} Questions? Chat on WhatsApp</a>
           </div>
         </div>
 
@@ -395,8 +398,8 @@ window.Views = window.Views || {};
         <h2>Lost in the markets? We light the way.</h2>
         <p>You're the sailor. NorthPoint is the North Star that guides you — from your first funded eval, through the buffer, to cashing your payout.</p>
         <div class="np-cta-row">
-          <button class="lp-btn gold" data-act="openApp">Start the journey →</button>
-          <a class="lp-btn ghost" href="${wa()}" target="_blank" rel="noopener">${UI.icon('wapp', '', 18)} Take the course</a>
+          <a class="lp-btn gold" href="${buy()}" target="_blank" rel="noopener">${UI.icon('academy', '', 17)} Enroll — $249</a>
+          <button class="lp-btn ghost" data-act="openApp">Try the app free →</button>
         </div>
       </div>
       <div class="np-sea">

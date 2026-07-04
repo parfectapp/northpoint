@@ -1,12 +1,12 @@
 {
   "name": "NorthPoint — Trading Analytics",
   "short_name": "NorthPoint",
-  "description": "Curso De Cero a Payout + journal de trading, cuentas de fondeo y tu Snowball (money management). Tu brújula en los mercados.",
+  "description": "Zero to Payout course + trading journal, funded accounts and your Snowball (money management). Your compass in the markets.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0a0e15",
   "theme_color": "#0a0e15",
-  "lang": "es-MX",
+  "lang": "en",
   "orientation": "portrait",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }

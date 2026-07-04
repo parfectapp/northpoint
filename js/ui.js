@@ -102,12 +102,12 @@ const UI = (() => {
   function price(n) { return '$' + (n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
   // ---- fechas ----
-  const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-  const MESL = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  const DOW = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-  function date(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); return `${d} ${MES[m - 1]}`; }
+  const MES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const MESL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function date(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); return `${MES[m - 1]} ${d}`; }
   function dateUS(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); return `${MESL[m - 1].slice(0, 3)} ${d}, ${y}`; }
-  function dateLong(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); return `${d} de ${MESL[m - 1].toLowerCase()} ${y}`; }
+  function dateLong(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); return `${MESL[m - 1]} ${d}, ${y}`; }
   function monthKey(iso) { return (iso || '').slice(0, 7); }
   function monthLabel(key) { const [y, m] = key.split('-').map(Number); return `${MESL[m - 1]} ${y}`; }
   const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };

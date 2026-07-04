@@ -1,8 +1,8 @@
-/* ============ RACHA · Formularios (sheets de captura) ============ */
+/* ============ NorthPoint · Forms (capture sheets) ============ */
 const Forms = (() => {
   const esc = UI.esc;
 
-  // ---- helpers de campo ----
+  // ---- field helpers ----
   const field = (label, inner, hint) =>
     `<label class="field"><span class="f-lbl">${label}</span>${inner}${hint ? `<span class="f-hint">${hint}</span>` : ''}</label>`;
   const input = (id, val, ph, type) =>
@@ -24,16 +24,16 @@ const Forms = (() => {
   }
   const head = (t, sub) => `<div class="sheet-head"><div class="h2">${t}</div>${sub ? `<div class="muted small">${sub}</div>` : ''}</div>`;
   const actions = (act, id, label) =>
-    `<div class="btn-row mt8"><button class="btn btn-ghost" data-act="closeSheet">Cancelar</button>
+    `<div class="btn-row mt8"><button class="btn btn-ghost" data-act="closeSheet">Cancel</button>
      <button class="btn btn-primary" data-act="${act}" ${id ? `data-id="${id}"` : ''}>${label}</button></div>`;
-  const delRow = (act, id) => id ? `<button class="dellink" data-act="${act}" data-id="${id}">${UI.icon('trash', '', 15)} Eliminar</button>` : '';
+  const delRow = (act, id) => id ? `<button class="dellink" data-act="${act}" data-id="${id}">${UI.icon('trash', '', 15)} Delete</button>` : '';
 
   const accOptions = () => {
     const a = App.db.accounts.map(x => ({ v: x.id, label: `${x.alias} · ${Data.firmOf(x.firm).label}` }));
-    return a.length ? a : [{ v: '', label: 'Sin cuentas todavía' }];
+    return a.length ? a : [{ v: '', label: 'No accounts yet' }];
   };
 
-  // ---- adjuntos: fotos / videos ----
+  // ---- attachments: photos / videos ----
   function mediaStrip() {
     const list = (typeof App !== 'undefined' && App.pendingMedia) || [];
     return list.map(m => {
@@ -44,13 +44,13 @@ const Forms = (() => {
       } else {
         inner = m.type === 'video' ? `<video data-media="${m.id}" muted playsinline></video>` : `<img data-media="${m.id}" alt="" />`;
       }
-      return `<div class="media-item" data-act="openMedia" data-key="${m.k}">${inner}${m.type === 'video' ? `<span class="media-play">${UI.icon('play', '', 16)}</span>` : ''}<button class="media-del" data-act="removeMedia" data-key="${m.k}" aria-label="Quitar">${UI.icon('x', '', 12)}</button></div>`;
+      return `<div class="media-item" data-act="openMedia" data-key="${m.k}">${inner}${m.type === 'video' ? `<span class="media-play">${UI.icon('play', '', 16)}</span>` : ''}<button class="media-del" data-act="removeMedia" data-key="${m.k}" aria-label="Remove">${UI.icon('x', '', 12)}</button></div>`;
     }).join('');
   }
   function mediaField(label) {
-    return `<div class="field"><span class="f-lbl">${label || 'Fotos / videos del setup'}</span>
+    return `<div class="field"><span class="f-lbl">${label || 'Setup photos / videos'}</span>
       <div class="media-strip" id="media-strip">${mediaStrip()}</div>
-      <label class="media-add">${UI.icon('plus', '', 16)} Agregar foto o video
+      <label class="media-add">${UI.icon('plus', '', 16)} Add photo or video
         <input type="file" accept="image/*,video/*" multiple data-change="attachMedia" hidden />
       </label></div>`;
   }
@@ -61,108 +61,108 @@ const Forms = (() => {
     const inst = Data.INSTRUMENTS.map(i => ({ v: i, label: i }));
     const setups = Data.SETUPS.map(s => ({ v: s.id, label: s.label }));
     const emo = Data.EMOTIONS.map(e => ({ v: e.id, label: e.label }));
-    return head(t.id ? 'Editar trade' : 'Nuevo trade', 'Anota cómo salió tu operación') + `
+    return head(t.id ? 'Edit trade' : 'New trade', 'Log how your trade went') + `
       <div class="form">
         <div class="grid2">
-          ${field('Fecha', dateField('t-date', t.date))}
-          ${field('Hora', input('t-time', t.time, '07:48', 'time'))}
+          ${field('Date', dateField('t-date', t.date))}
+          ${field('Time', input('t-time', t.time, '07:48', 'time'))}
         </div>
-        ${field('Cuenta', select('t-account', accOptions(), t.accountId))}
-        ${field('Instrumento', pick('inst', inst, t.instrument || 'MNQ'))}
-        ${field('Dirección', pick('side', [{ v: 'long', label: 'Long' }, { v: 'short', label: 'Short' }], t.side || 'long'))}
-        ${field('Resultado', pick('result', [{ v: 'win', label: 'Win' }, { v: 'loss', label: 'Loss' }, { v: 'be', label: 'BE' }], t.result || 'win'))}
+        ${field('Account', select('t-account', accOptions(), t.accountId))}
+        ${field('Instrument', pick('inst', inst, t.instrument || 'MNQ'))}
+        ${field('Direction', pick('side', [{ v: 'long', label: 'Long' }, { v: 'short', label: 'Short' }], t.side || 'long'))}
+        ${field('Result', pick('result', [{ v: 'win', label: 'Win' }, { v: 'loss', label: 'Loss' }, { v: 'be', label: 'BE' }], t.result || 'win'))}
         <div class="grid2">
-          ${field('Contratos', numField('t-contracts', t.contracts, '4'))}
-          ${field('Resultado $ (±)', numField('t-pnl', t.pnl, '+420 / -260'), 'Negativo si perdiste')}
+          ${field('Contracts', numField('t-contracts', t.contracts, '4'))}
+          ${field('Result $ (±)', numField('t-pnl', t.pnl, '+420 / -260'), 'Negative if you lost')}
         </div>
         <div class="grid2">
-          ${field('Entrada', numField('t-entry', t.entry, '30500.25'))}
-          ${field('Salida', numField('t-exit', t.exit, '30516.50'))}
+          ${field('Entry', numField('t-entry', t.entry, '30500.25'))}
+          ${field('Exit', numField('t-exit', t.exit, '30516.50'))}
         </div>
         ${field('Setup', pick('setup', setups, t.setup || 'orb'))}
-        ${field('¿Cómo operé?', pick('emotion', emo, t.emotion || 'disciplina'))}
-        ${field('Notas', area('t-notes', t.notes, '¿Qué viste? ¿Seguiste el plan?'))}
-        ${mediaField('Screenshot del setup (fotos / videos)')}
-      </div>` + actions('saveTrade', t.id, t.id ? 'Guardar' : 'Agregar trade') + delRow('delTrade', t.id);
+        ${field('How did I trade?', pick('emotion', emo, t.emotion || 'disciplina'))}
+        ${field('Notes', area('t-notes', t.notes, 'What did you see? Did you follow the plan?'))}
+        ${mediaField('Setup screenshot (photos / videos)')}
+      </div>` + actions('saveTrade', t.id, t.id ? 'Save' : 'Add trade') + delRow('delTrade', t.id);
   }
 
-  // ---- CUENTA ----
+  // ---- ACCOUNT ----
   function account(a) {
     a = a || {};
     const firms = Data.FIRMS.map(f => ({ v: f.id, label: f.label }));
     const phases = Data.PHASES.map(p => ({ v: p.id, label: p.label }));
     const status = Data.ACC_STATUS.map(s => ({ v: s.id, label: s.label }));
-    return head(a.id ? 'Editar cuenta' : 'Nueva cuenta de fondeo') + `
+    return head(a.id ? 'Edit account' : 'New funded account') + `
       <div class="form">
-        ${field('Firma', pick('firm', firms, a.firm || 'tradeify'))}
-        ${field('Nombre / alias', input('a-alias', a.alias, 'Tradeify 50K'))}
-        ${field('Tamaño de la cuenta ($)', numField('a-size', a.size, '50000'))}
-        ${field('Fase', pick('phase', phases, a.phase || 'eval'))}
-        ${field('Estado', pick('status', status, a.status || 'activa'))}
-      </div>` + actions('saveAccount', a.id, a.id ? 'Guardar' : 'Agregar cuenta');
+        ${field('Firm', pick('firm', firms, a.firm || 'tradeify'))}
+        ${field('Name / alias', input('a-alias', a.alias, 'Tradeify 50K'))}
+        ${field('Account size ($)', numField('a-size', a.size, '50000'))}
+        ${field('Phase', pick('phase', phases, a.phase || 'eval'))}
+        ${field('Status', pick('status', status, a.status || 'activa'))}
+      </div>` + actions('saveAccount', a.id, a.id ? 'Save' : 'Add account');
   }
 
   // ---- PAYOUT ----
   function payout(p) {
     p = p || {};
     const firms = Data.FIRMS.map(f => ({ v: f.id, label: f.label }));
-    return head(p.id ? 'Editar payout' : 'Registrar payout', '¡Otro cobro a la cuenta!') + `
+    return head(p.id ? 'Edit payout' : 'Log payout', 'Another cash-out!') + `
       <div class="form">
-        ${field('Fecha', dateField('p-date', p.date))}
-        ${field('Firma', pick('pfirm', firms, p.firm || 'tradeify'))}
-        ${field('Cuenta (opcional)', select('p-account', [{ v: '', label: '— Sin asignar —' }].concat(accOptions().filter(o => o.v)), p.accountId || ''))}
-        ${field('Monto cobrado ($)', numField('p-amount', p.amount, '1000'), 'Lo que llegó a tu bolsillo')}
-      </div>` + actions('savePayout', p.id, p.id ? 'Guardar' : 'Registrar cobro') + delRow('delPayout', p.id);
+        ${field('Date', dateField('p-date', p.date))}
+        ${field('Firm', pick('pfirm', firms, p.firm || 'tradeify'))}
+        ${field('Account (optional)', select('p-account', [{ v: '', label: '— Unassigned —' }].concat(accOptions().filter(o => o.v)), p.accountId || ''))}
+        ${field('Amount paid out ($)', numField('p-amount', p.amount, '1000'), 'What landed in your pocket')}
+      </div>` + actions('savePayout', p.id, p.id ? 'Save' : 'Log payout') + delRow('delPayout', p.id);
   }
 
-  // ---- META ----
+  // ---- GOAL ----
   function goal(g) {
     g = g || {};
     const icons = [
-      { v: 'home', label: 'Depa' }, { v: 'car', label: 'Coche' }, { v: 'wallet', label: 'Gastos' },
-      { v: 'target', label: 'Meta' }, { v: 'trophy', label: 'Logro' },
+      { v: 'home', label: 'Home' }, { v: 'car', label: 'Car' }, { v: 'wallet', label: 'Expenses' },
+      { v: 'target', label: 'Goal' }, { v: 'trophy', label: 'Trophy' },
     ];
-    return head(g.id ? 'Editar meta' : 'Nueva meta', 'Tu para qué del trading') + `
+    return head(g.id ? 'Edit goal' : 'New goal', 'Your reason for trading') + `
       <div class="form">
-        ${field('¿Qué quieres lograr?', input('g-name', g.name, 'Enganche del depa'))}
-        ${field('Ícono', pick('gicon', icons, g.icon || 'target'))}
-        ${field('Tipo', pick('gmonthly', [{ v: 'no', label: 'Meta única' }, { v: 'si', label: 'Gasto mensual' }], g.monthly ? 'si' : 'no'))}
+        ${field('What do you want to achieve?', input('g-name', g.name, 'Apartment down payment'))}
+        ${field('Icon', pick('gicon', icons, g.icon || 'target'))}
+        ${field('Type', pick('gmonthly', [{ v: 'no', label: 'One-time goal' }, { v: 'si', label: 'Monthly expense' }], g.monthly ? 'si' : 'no'))}
         <div class="grid2">
-          ${field('Monto objetivo ($)', numField('g-target', g.target, '15000'))}
-          ${field('Ya tengo ($)', numField('g-saved', g.saved, '0'))}
+          ${field('Target amount ($)', numField('g-target', g.target, '15000'))}
+          ${field('Already have ($)', numField('g-saved', g.saved, '0'))}
         </div>
-      </div>` + actions('saveGoal', g.id, g.id ? 'Guardar' : 'Agregar meta') + delRow('delGoal', g.id);
+      </div>` + actions('saveGoal', g.id, g.id ? 'Save' : 'Add goal') + delRow('delGoal', g.id);
   }
 
-  // ---- NOTA DE BITÁCORA ----
+  // ---- JOURNAL NOTE ----
   function note(n) {
     n = n || {};
     const tags = [
-      { v: 'nota', label: 'Nota' }, { v: 'win', label: 'Win' },
-      { v: 'leccion', label: 'Lección' }, { v: 'error', label: 'Error' },
+      { v: 'nota', label: 'Note' }, { v: 'win', label: 'Win' },
+      { v: 'leccion', label: 'Lesson' }, { v: 'error', label: 'Error' },
     ];
-    return head(n.id ? 'Editar nota' : 'Nueva nota') + `
+    return head(n.id ? 'Edit note' : 'New note') + `
       <div class="form">
-        ${field('Fecha', dateField('n-date', n.date))}
-        ${field('Etiqueta', pick('ntag', tags, n.tag || 'nota'))}
-        ${field('¿Qué pasó hoy?', area('n-text', n.text, 'Disciplina, emociones, qué mejorar...'))}
-        ${mediaField('Fotos / videos')}
-      </div>` + actions('saveNote', n.id, n.id ? 'Guardar' : 'Guardar nota') + delRow('delNote', n.id);
+        ${field('Date', dateField('n-date', n.date))}
+        ${field('Tag', pick('ntag', tags, n.tag || 'nota'))}
+        ${field('What happened today?', area('n-text', n.text, 'Discipline, emotions, what to improve...'))}
+        ${mediaField('Photos / videos')}
+      </div>` + actions('saveNote', n.id, n.id ? 'Save' : 'Save note') + delRow('delNote', n.id);
   }
 
-  // ---- GASTO (Cartera) ----
+  // ---- EXPENSE (Wallet) ----
   function expense(e) {
     e = e || {};
     const icons = [
-      { v: 'home', label: 'Casa' }, { v: 'wallet', label: 'Comida' }, { v: 'car', label: 'Coche' },
-      { v: 'star', label: 'Suscripción' }, { v: 'flame', label: 'Gusto' }, { v: 'shield', label: 'Seguro' }, { v: 'coin', label: 'Otro' },
+      { v: 'home', label: 'Home' }, { v: 'wallet', label: 'Food' }, { v: 'car', label: 'Car' },
+      { v: 'star', label: 'Subscription' }, { v: 'flame', label: 'Treat' }, { v: 'shield', label: 'Insurance' }, { v: 'coin', label: 'Other' },
     ];
-    return head(e.id ? 'Editar gasto' : 'Nuevo gasto', 'Tu gasto fijo del mes') + `
+    return head(e.id ? 'Edit expense' : 'New expense', 'Your fixed monthly expense') + `
       <div class="form">
-        ${field('¿Qué gasto es?', input('x-name', e.name, 'Renta'))}
-        ${field('Monto al mes ($)', numField('x-amount', e.amount, '400'))}
-        ${field('Ícono', pick('xicon', icons, e.icon || 'wallet'))}
-      </div>` + actions('saveExpense', e.id, e.id ? 'Guardar' : 'Agregar gasto') + delRow('delExpense', e.id);
+        ${field('What expense is it?', input('x-name', e.name, 'Rent'))}
+        ${field('Amount per month ($)', numField('x-amount', e.amount, '400'))}
+        ${field('Icon', pick('xicon', icons, e.icon || 'wallet'))}
+      </div>` + actions('saveExpense', e.id, e.id ? 'Save' : 'Add expense') + delRow('delExpense', e.id);
   }
 
   return { trade, account, payout, goal, note, expense, pick, field, input, numField, head, mediaField, mediaStrip };

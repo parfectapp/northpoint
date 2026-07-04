@@ -6,7 +6,7 @@ window.Views = window.Views || {};
   // ⚙️ Edita estos datos y listo:
   const CFG = {
     whatsapp: '524434405815',          // tu número con código de país (sin +)
-    waMsg: 'Hola André, quiero entrar al curso De Cero a Payout 🚀',
+    waMsg: 'Hi André, I want to join the Zero to Payout course 🚀',
     price: 4990,                        // precio en MXN
     priceOld: 7990,
     spots: 50,

@@ -1,39 +1,39 @@
-/* ============ RACHA · Catálogos, curso, plan y datos de ejemplo ============ */
+/* ============ NorthPoint · Catalogs, course, plan & sample data ============ */
 const Data = (() => {
 
-  // ---- firmas de fondeo ----
+  // ---- prop firms ----
   const FIRMS = [
     { id: 'tradeify', label: 'Tradeify',         color: '#22c55e' },
     { id: 'apex',     label: 'Apex',             color: '#ef4444' },
     { id: 'lucid',    label: 'Lucid Trading',    color: '#a855f7' },
     { id: 'tpt',      label: 'TakeProfitTrader', color: '#3b82f6' },
     { id: 'mff',      label: 'MyFundedFutures',  color: '#f59e0b' },
-    { id: 'otra',     label: 'Otra',             color: '#94a3b8' },
+    { id: 'otra',     label: 'Other',            color: '#94a3b8' },
   ];
   const firmOf = id => FIRMS.find(f => f.id === id) || FIRMS[FIRMS.length - 1];
 
-  // ---- fase de la cuenta (eval → buffer → payout) ----
+  // ---- account phase (eval → buffer → payout) ----
   const PHASES = [
-    { id: 'eval',   label: 'Evaluación', short: 'EVAL',   color: '#f59e0b' },
+    { id: 'eval',   label: 'Evaluation', short: 'EVAL',   color: '#f59e0b' },
     { id: 'buffer', label: 'Buffer',     short: 'BUFFER', color: '#3b82f6' },
     { id: 'payout', label: 'Payout',     short: 'PAYOUT', color: '#22c55e' },
-    { id: 'funded', label: 'Fondeada',   short: 'PA',     color: '#5bf0ad' },
+    { id: 'funded', label: 'Funded',     short: 'PA',     color: '#5bf0ad' },
   ];
   const phaseOf = id => PHASES.find(p => p.id === id) || PHASES[0];
 
   const ACC_STATUS = [
-    { id: 'activa',  label: 'Activa',  color: '#22c55e' },
-    { id: 'pasada',  label: 'Cobrada', color: '#5bf0ad' },
-    { id: 'quemada', label: 'Quemada', color: '#ef4444' },
+    { id: 'activa',  label: 'Active',   color: '#22c55e' },
+    { id: 'pasada',  label: 'Paid out', color: '#5bf0ad' },
+    { id: 'quemada', label: 'Blown',    color: '#ef4444' },
   ];
   const statusOf = id => ACC_STATUS.find(s => s.id === id) || ACC_STATUS[0];
 
-  const INSTRUMENTS = ['MNQ', 'NQ', 'MES', 'ES', 'MGC', 'M2K', 'Otro'];
+  const INSTRUMENTS = ['MNQ', 'NQ', 'MES', 'ES', 'MGC', 'M2K', 'Other'];
 
   // ---- setups (ORB + Killzones + EMAs 14/50 + SMC) ----
   const SETUPS = [
     { id: 'orb', label: 'ORB' }, { id: 'killzone', label: 'Killzone' }, { id: 'smc', label: 'SMC' },
-    { id: 'emas', label: 'EMAs 14/50' }, { id: 'breakout', label: 'Breakout' }, { id: 'rev', label: 'Reversión' }, { id: 'otro', label: 'Otro' },
+    { id: 'emas', label: 'EMAs 14/50' }, { id: 'breakout', label: 'Breakout' }, { id: 'rev', label: 'Reversal' }, { id: 'otro', label: 'Other' },
   ];
   const setupOf = id => SETUPS.find(s => s.id === id) || SETUPS[SETUPS.length - 1];
 
@@ -44,93 +44,93 @@ const Data = (() => {
   ];
 
   const EMOTIONS = [
-    { id: 'disciplina', label: 'Disciplinado' }, { id: 'paciencia', label: 'Paciente' }, { id: 'neutral', label: 'Neutral' },
-    { id: 'fomo', label: 'FOMO' }, { id: 'revancha', label: 'Revancha' }, { id: 'ansioso', label: 'Ansioso' },
+    { id: 'disciplina', label: 'Disciplined' }, { id: 'paciencia', label: 'Patient' }, { id: 'neutral', label: 'Neutral' },
+    { id: 'fomo', label: 'FOMO' }, { id: 'revancha', label: 'Revenge' }, { id: 'ansioso', label: 'Anxious' },
   ];
 
-  // ====================== CURSO ======================
+  // ====================== COURSE ======================
   const COURSE = [
-    { id: 'm0', n: 0, title: 'Bienvenida y mentalidad', icon: 'flag', color: '#3d6bf5',
-      desc: 'La base mental antes de tocar una sola vela.',
+    { id: 'm0', n: 0, title: 'Welcome & mindset', icon: 'flag', color: '#3d6bf5',
+      desc: 'The mental base before you touch a single candle.',
       lessons: [
-        { id: 'l01', title: 'Cómo aprovechar este curso', dur: '6 min', desc: 'Cómo está armado el programa, qué necesitas y cómo usar tu journal Snowball desde hoy.' },
-        { id: 'l02', title: 'La rentabilidad no es suerte', dur: '9 min', desc: 'Por qué ganar consistente es resultado de reglas + horarios + repetición, no de adivinar.' },
-        { id: 'l03', title: 'Define tu “para qué”', dur: '7 min', desc: 'Tu depa, tu coche y tu libertad. Lo configuras en Metas para no perder el norte.' },
-        { id: 'l04', title: 'Firma tu contrato del trader', dur: '5 min', desc: 'El compromiso que te separa del que quema cuentas. Lo firmas en la sección Plan.' },
+        { id: 'l01', title: 'How to get the most from this course', dur: '6 min', desc: 'How the program is built, what you need, and how to use your NorthPoint journal from day one.' },
+        { id: 'l02', title: 'Profitability is not luck', dur: '9 min', desc: 'Why consistent winning is the result of rules + timing + repetition, not guessing.' },
+        { id: 'l03', title: 'Define your “why”', dur: '7 min', desc: 'Your apartment, your car and your freedom. Set them in Goals so you never lose your north.' },
+        { id: 'l04', title: 'Sign your trader’s contract', dur: '5 min', desc: 'The commitment that separates you from the one who blows accounts. Sign it in the Plan section.' },
       ] },
-    { id: 'm1', n: 1, title: 'La rutina del trader rentable', icon: 'clock', color: '#22c55e',
-      desc: 'Tu bloque de Nueva York, paso a paso.',
+    { id: 'm1', n: 1, title: 'The profitable trader’s routine', icon: 'clock', color: '#22c55e',
+      desc: 'Your New York block, step by step.',
       lessons: [
-        { id: 'l11', title: 'El bloque NY: 7:00 a 9:00', dur: '11 min', desc: 'Premarket en Discord, apertura, ORB y cierre. Operar 90 minutos con foco.' },
-        { id: 'l12', title: 'Setup de TradingView', dur: '8 min', desc: 'Layout de 5 min + 1 min para MNQ, indicadores y plantilla lista.' },
-        { id: 'l13', title: 'Daily bias antes de abrir', dur: '9 min', desc: 'Cómo decidir si hoy buscas largos o cortos antes de la campana.' },
+        { id: 'l11', title: 'The NY block: 7:00 to 9:00', dur: '11 min', desc: 'Premarket on Discord, the open, ORB and close. Trade 90 minutes with focus.' },
+        { id: 'l12', title: 'TradingView setup', dur: '8 min', desc: '5-min + 1-min layout for MNQ, indicators and a ready template.' },
+        { id: 'l13', title: 'Daily bias before the open', dur: '9 min', desc: 'How to decide whether you look for longs or shorts before the bell.' },
       ] },
     { id: 'm2', n: 2, title: 'ORB — Opening Range Breakout', icon: 'candles', color: '#3b82f6',
-      desc: 'El corazón de la estrategia.',
+      desc: 'The heart of the strategy.',
       lessons: [
-        { id: 'l21', title: 'Marcar el rango de apertura', dur: '10 min', desc: 'Cómo y cuándo trazar el ORB, y por qué funciona.' },
-        { id: 'l22', title: 'Ruptura real vs. fakeout', dur: '12 min', desc: 'Distinguir la ruptura que paga de la trampa.' },
-        { id: 'l23', title: 'Entrada, stop y primer target', dur: '11 min', desc: 'Dónde entras, dónde te sales y cómo gestionas el trade.' },
+        { id: 'l21', title: 'Marking the opening range', dur: '10 min', desc: 'How and when to draw the ORB, and why it works.' },
+        { id: 'l22', title: 'Real breakout vs. fakeout', dur: '12 min', desc: 'Telling the breakout that pays from the trap.' },
+        { id: 'l23', title: 'Entry, stop and first target', dur: '11 min', desc: 'Where you enter, where you exit and how you manage the trade.' },
       ] },
-    { id: 'm3', n: 3, title: 'Killzones y horarios', icon: 'target', color: '#f59e0b',
-      desc: 'Operar solo cuando vale la pena.',
+    { id: 'm3', n: 3, title: 'Killzones and timing', icon: 'target', color: '#f59e0b',
+      desc: 'Trade only when it’s worth it.',
       lessons: [
-        { id: 'l31', title: 'Qué son las killzones', dur: '9 min', desc: 'Las ventanas de mayor probabilidad del día.' },
-        { id: 'l32', title: 'Alinear killzone + ORB', dur: '10 min', desc: 'La confluencia que dispara tu win rate.' },
+        { id: 'l31', title: 'What killzones are', dur: '9 min', desc: 'The highest-probability windows of the day.' },
+        { id: 'l32', title: 'Aligning killzone + ORB', dur: '10 min', desc: 'The confluence that lifts your win rate.' },
       ] },
-    { id: 'm4', n: 4, title: 'Confluencias: EMAs 14/50 + SMC', icon: 'chart', color: '#a855f7',
-      desc: 'Lectura institucional del mercado.',
+    { id: 'm4', n: 4, title: 'Confluences: EMAs 14/50 + SMC', icon: 'chart', color: '#a855f7',
+      desc: 'Reading the market like an institution.',
       lessons: [
-        { id: 'l41', title: 'Tendencia con EMAs 14 y 50', dur: '9 min', desc: 'Filtro de dirección simple y potente.' },
-        { id: 'l42', title: 'SMC: estructura y liquidez', dur: '13 min', desc: 'Order blocks, barridos de liquidez y cómo leerlos.' },
-        { id: 'l43', title: 'Anatomía del A+ setup', dur: '12 min', desc: 'Cuando todo se alinea: la única entrada que tomas.' },
+        { id: 'l41', title: 'Trend with the 14 & 50 EMAs', dur: '9 min', desc: 'A simple, powerful direction filter.' },
+        { id: 'l42', title: 'SMC: structure and liquidity', dur: '13 min', desc: 'Order blocks, liquidity sweeps and how to read them.' },
+        { id: 'l43', title: 'Anatomy of the A+ setup', dur: '12 min', desc: 'When everything aligns: the only entry you take.' },
       ] },
-    { id: 'm5', n: 5, title: 'Gestión de riesgo', icon: 'shield', color: '#ef4444',
-      desc: 'El módulo que te salva la cuenta.',
+    { id: 'm5', n: 5, title: 'Risk management', icon: 'shield', color: '#ef4444',
+      desc: 'The module that saves your account.',
       lessons: [
-        { id: 'l51', title: 'Riesgo por trade y máximo diario', dur: '11 min', desc: 'El número que separa al rentable del quemado.' },
-        { id: 'l52', title: 'W = stop, y “si pierdes, remas”', dur: '8 min', desc: 'Si ganas el día, cierras. Si pierdes, sin revancha.' },
-        { id: 'l53', title: 'Tamaño por fase: 4 mini / 2 mini / 5 micro', dur: '9 min', desc: 'Cuántos contratos según estés en eval, buffer o payout.' },
+        { id: 'l51', title: 'Risk per trade and daily max', dur: '11 min', desc: 'The number that separates the profitable from the blown.' },
+        { id: 'l52', title: 'W = stop, and “if you lose, grind”', dur: '8 min', desc: 'If you win the day, close. If you lose, no revenge.' },
+        { id: 'l53', title: 'Size by phase: 4 mini / 2 mini / 5 micro', dur: '9 min', desc: 'How many contracts depending on eval, buffer or payout.' },
       ] },
-    { id: 'm6', n: 6, title: 'El embudo: Eval → Buffer → Payout', icon: 'coin', color: '#22c55e',
-      desc: 'De pasar la prueba a cobrar.',
+    { id: 'm6', n: 6, title: 'The funnel: Eval → Buffer → Payout', icon: 'coin', color: '#22c55e',
+      desc: 'From passing the test to getting paid.',
       lessons: [
-        { id: 'l61', title: 'Pasar la evaluación', dur: '10 min', desc: 'Target $1,000, riesgo $600, 5 trades. Sin apurar.' },
-        { id: 'l62', title: 'Construir el buffer', dur: '9 min', desc: 'El colchón que te deja cobrar tranquilo.' },
-        { id: 'l63', title: 'Cobrar el payout (y el fee)', dur: '11 min', desc: 'Cadencia ~15 días, el 10% de fee y cómo escalar varias cuentas.' },
+        { id: 'l61', title: 'Passing the evaluation', dur: '10 min', desc: 'Target $1,000, risk $600, 5 trades. No rushing.' },
+        { id: 'l62', title: 'Building the buffer', dur: '9 min', desc: 'The cushion that lets you cash out calmly.' },
+        { id: 'l63', title: 'Cashing the payout (and the fee)', dur: '11 min', desc: '~15-day cadence, the 10% fee and how to scale several accounts.' },
       ] },
-    { id: 'm7', n: 7, title: 'Psicología y disciplina', icon: 'book', color: '#06b6d4',
-      desc: 'El juego interior.',
+    { id: 'm7', n: 7, title: 'Psychology & discipline', icon: 'book', color: '#06b6d4',
+      desc: 'The inner game.',
       lessons: [
-        { id: 'l71', title: 'FOMO, revancha y miedo', dur: '12 min', desc: 'Detectarlos en vivo y cortarlos.' },
-        { id: 'l72', title: 'El journal como hábito', dur: '8 min', desc: 'Registrar cada trade en Snowball y revisarlo cada semana.' },
+        { id: 'l71', title: 'FOMO, revenge and fear', dur: '12 min', desc: 'Spotting them live and cutting them off.' },
+        { id: 'l72', title: 'The journal as a habit', dur: '8 min', desc: 'Log every trade in NorthPoint and review it every week.' },
       ] },
-    { id: 'm8', n: 8, title: 'De payout a patrimonio', icon: 'trophy', color: '#ffd24a',
-      desc: 'Que el dinero trabaje.',
+    { id: 'm8', n: 8, title: 'From payout to wealth', icon: 'trophy', color: '#ffd24a',
+      desc: 'Put the money to work.',
       lessons: [
-        { id: 'l81', title: 'Qué hacer con cada cobro', dur: '10 min', desc: 'Reinvertir vs. retirar, y construir tus metas.' },
-        { id: 'l82', title: 'Tu plan a 90 días', dur: '9 min', desc: 'El mapa para sostener el ingreso.' },
+        { id: 'l81', title: 'What to do with each cash-out', dur: '10 min', desc: 'Reinvest vs. withdraw, and building your goals.' },
+        { id: 'l82', title: 'Your 90-day plan', dur: '9 min', desc: 'The map to keep the income going.' },
       ] },
   ];
   const allLessons = () => COURSE.flatMap(m => m.lessons.map(l => ({ ...l, moduleId: m.id })));
   const lessonById = id => allLessons().find(l => l.id === id);
 
-  // ---- plan (del PDF NorthPoint · Zero to Hero) ----
+  // ---- plan (from the NorthPoint · Zero to Hero PDF) ----
   const PLAN = {
-    pledge: 'Me comprometo a respetar la estructura de este plan por encima de cualquier impulso emocional. La rentabilidad no es suerte: es el resultado de seguir mis reglas de riesgo y mis horarios sin excepción. Me presento en cada sesión, sigo el plan y opero hasta cobrar el payout. Mi disciplina es mi libertad financiera.',
+    pledge: 'I commit to respecting the structure of this plan above any emotional impulse. Profitability is not luck: it is the result of following my risk rules and my schedule without exception. I show up to every session, I follow the plan, and I trade until I cash the payout. My discipline is my financial freedom.',
     routine: [
-      { t: '7:00', label: 'Discord · premarket', note: 'Noticias y sesgo del día' },
-      { t: '7:30', label: 'Apertura NY', note: 'Marco el rango de apertura' },
-      { t: '7:45', label: 'ORB + entrada', note: 'Solo A+ setups' },
-      { t: '9:00', label: 'Cierre', note: 'Cierro pantallas, anoto el journal' },
+      { t: '7:00', label: 'Discord · premarket', note: 'News and daily bias' },
+      { t: '7:30', label: 'NY open', note: 'Mark the opening range' },
+      { t: '7:45', label: 'ORB + entry', note: 'Only A+ setups' },
+      { t: '9:00', label: 'Close', note: 'Close screens, log the journal' },
     ],
     rules: [
-      'Solo opero A+ setups: ORB + Killzone + EMAs 14/50 + SMC.',
-      'Trabajo en 5 min y confirmo en 1 min (MNQ).',
-      'Defino mi daily bias antes de la apertura.',
-      'Si voy ganador del día (W): cierro y paro. W = stop.',
-      'Si voy perdedor (L): remo con disciplina, jamás opero por revancha.',
-      'Respeto el riesgo máximo diario sin una sola excepción.',
+      'I only trade A+ setups: ORB + Killzone + EMAs 14/50 + SMC.',
+      'I work on the 5-min and confirm on the 1-min (MNQ).',
+      'I define my daily bias before the open.',
+      'If I’m green for the day (W): I close and stop. W = stop.',
+      'If I’m red (L): I grind with discipline, never revenge-trade.',
+      'I respect the daily max loss without a single exception.',
     ],
     phases: [
       { id: 'eval',   target: 1000, maxLoss: 600, trades: 5, size: '4 mini' },
@@ -138,19 +138,19 @@ const Data = (() => {
       { id: 'payout', target: 250,  maxLoss: 500, trades: 2, size: '5 micro' },
     ],
     checklist: [
-      { id: 'bias', label: 'Definí mi daily bias' }, { id: 'premkt', label: 'Revisé premarket / Discord' },
-      { id: 'aplus', label: 'Solo entré en A+ setups' }, { id: 'risk', label: 'Respeté el riesgo máximo' },
-      { id: 'wstop', label: 'Si gané el día, paré (W = stop)' }, { id: 'journal', label: 'Registré mis trades' },
+      { id: 'bias', label: 'Defined my daily bias' }, { id: 'premkt', label: 'Checked premarket / Discord' },
+      { id: 'aplus', label: 'Only entered A+ setups' }, { id: 'risk', label: 'Respected the max risk' },
+      { id: 'wstop', label: 'If I won the day, I stopped (W = stop)' }, { id: 'journal', label: 'Logged my trades' },
     ],
   };
 
-  // ====================== HOME (estilo TradeSyncer) ======================
+  // ====================== HOME (TradeSyncer style) ======================
   const HOME = {
     instruments: [
       { sym: 'NQ', name: 'Nasdaq 100', price: 29656.25, chg: 1.75, pct: 0.01 },
       { sym: 'ES', name: 'S&P 500', price: 7433.50, chg: 0.25, pct: 0.00 },
-      { sym: 'GC', name: 'Oro', price: 4077.90, chg: 0.00, pct: 0.00 },
-      { sym: 'CL', name: 'Petróleo', price: 75.19, chg: 0.00, pct: 0.00 },
+      { sym: 'GC', name: 'Gold', price: 4077.90, chg: 0.00, pct: 0.00 },
+      { sym: 'CL', name: 'Oil', price: 75.19, chg: 0.00, pct: 0.00 },
       { sym: 'RTY', name: 'Russell 2000', price: 2996.10, chg: -0.30, pct: -0.01 },
       { sym: 'YM', name: 'Dow', price: 52007.00, chg: -7.00, pct: -0.01 },
       { sym: 'MNQ', name: 'Micro Nasdaq', price: 29656.25, chg: 1.75, pct: 0.01 },
@@ -168,52 +168,52 @@ const Data = (() => {
     ],
     orders: 871601,
     econ: [
-      { day: 'Dom', date: 21, events: [] },
-      { day: 'Lun', date: 22, events: [['Fed · Waller habla', '07:00', 'red'], ['CFTC posiciones', '01:30', 'yellow']] },
-      { day: 'Mar', date: 23, today: true, events: [['S&P Global PMI', '07:45', 'red'], ['S&P Global PMI Serv.', '07:45', 'red'], ['S&P Global PMI Comp.', '07:45', 'red'], ['Subasta 2 años', '11:00', 'yellow'], ['API inventarios', '02:30', 'yellow']] },
-      { day: 'Mié', date: 24, events: [['Venta casas nuevas', '08:00', 'red'], ['Inventarios crudo', '08:30', 'red'], ['Cushing crudo', '08:30', 'yellow'], ['Subasta 5 años', '11:00', 'yellow']] },
-      { day: 'Jue', date: 25, events: [['Bienes durables', '01:30', 'red'], ['Precios PCE', '06:30', 'red'], ['Ingreso personal', '06:30', 'yellow'], ['Gasto personal', '06:30', 'yellow'], ['Core PCE', '06:30', 'red']] },
-      { day: 'Vie', date: 26, events: [['Balanza comercial', '01:30', 'yellow'], ['Michigan sentimiento', '08:00', 'red'], ['Michigan expectativas', '08:00', 'yellow']] },
-      { day: 'Sáb', date: 27, events: [] },
+      { day: 'Sun', date: 21, events: [] },
+      { day: 'Mon', date: 22, events: [['Fed · Waller speaks', '07:00', 'red'], ['CFTC positioning', '01:30', 'yellow']] },
+      { day: 'Tue', date: 23, today: true, events: [['S&P Global PMI', '07:45', 'red'], ['S&P Global PMI Serv.', '07:45', 'red'], ['S&P Global PMI Comp.', '07:45', 'red'], ['2-year auction', '11:00', 'yellow'], ['API inventories', '02:30', 'yellow']] },
+      { day: 'Wed', date: 24, events: [['New home sales', '08:00', 'red'], ['Crude inventories', '08:30', 'red'], ['Cushing crude', '08:30', 'yellow'], ['5-year auction', '11:00', 'yellow']] },
+      { day: 'Thu', date: 25, events: [['Durable goods', '01:30', 'red'], ['PCE prices', '06:30', 'red'], ['Personal income', '06:30', 'yellow'], ['Personal spending', '06:30', 'yellow'], ['Core PCE', '06:30', 'red']] },
+      { day: 'Fri', date: 26, events: [['Trade balance', '01:30', 'yellow'], ['Michigan sentiment', '08:00', 'red'], ['Michigan expectations', '08:00', 'yellow']] },
+      { day: 'Sat', date: 27, events: [] },
     ],
   };
 
   // ====================== SNOWBALL · money management ======================
-  // Reparto de cada payout (la "rueda de quesos")
+  // Split of each payout (the "pie wheel")
   const MONEY = {
-    base: 955, // monto promedio por payout (se recalcula con tus payouts reales)
+    base: 955, // average amount per payout (recalculated from your real payouts)
     payoutsMes: 4,
-    goalTarget: 1000000, // meta de patrimonio (calculadora)
-    goalRate: 10,        // rendimiento anual asumido para la meta
-    goalYears: 10,       // plazo de la meta (años)
+    goalTarget: 1000000, // wealth goal (calculator)
+    goalRate: 10,        // assumed annual return for the goal
+    goalYears: 10,       // goal horizon (years)
     allocations: [
-      { id: 'reinvest', name: 'Reinversión en fondeo', pct: 30, color: '#5fd0ff', icon: 'sync', desc: 'Más cuentas → más payouts' },
-      { id: 'invest', name: 'Inversión (Portafolio IA 2040)', pct: 30, color: '#7fb0ff', icon: 'chart', desc: 'Interés compuesto a 20-30 años' },
-      { id: 'expenses', name: 'Gastos / vida', pct: 20, color: '#ffd24a', icon: 'wallet', desc: 'Tu día a día' },
-      { id: 'reserve', name: 'Reserva / emergencias', pct: 12, color: '#22c55e', icon: 'shield', desc: '3-6 meses de colchón' },
-      { id: 'reward', name: 'Gusto / recompensa', pct: 8, color: '#a855f7', icon: 'star', desc: 'Disfruta tu progreso' },
+      { id: 'reinvest', name: 'Reinvest in funding', pct: 30, color: '#5fd0ff', icon: 'sync', desc: 'More accounts → more payouts' },
+      { id: 'invest', name: 'Investing (AI Portfolio 2040)', pct: 30, color: '#7fb0ff', icon: 'chart', desc: 'Compound interest over 20-30 years' },
+      { id: 'expenses', name: 'Expenses / life', pct: 20, color: '#ffd24a', icon: 'wallet', desc: 'Your day to day' },
+      { id: 'reserve', name: 'Reserve / emergencies', pct: 12, color: '#22c55e', icon: 'shield', desc: '3-6 months cushion' },
+      { id: 'reward', name: 'Treat / reward', pct: 8, color: '#a855f7', icon: 'star', desc: 'Enjoy your progress' },
     ],
   };
 
-  // Portafolio IA Generacional 2040 (del documento de André)
+  // Generational AI Portfolio 2040
   const PORTFOLIO = {
-    perfil: '24 años · perfil agresivo · horizonte 20-30 años',
+    perfil: 'Age 24 · aggressive profile · 20-30 year horizon',
     sectors: [
-      { name: 'Chips / Semiconductores', pct: 28, color: '#5fd0ff' },
-      { name: 'IA / Cloud / Software', pct: 25, color: '#7fb0ff' },
+      { name: 'Chips / Semiconductors', pct: 28, color: '#5fd0ff' },
+      { name: 'AI / Cloud / Software', pct: 25, color: '#7fb0ff' },
       { name: 'Crypto / Blockchain', pct: 18, color: '#a855f7' },
-      { name: 'Networking IA', pct: 10, color: '#22c55e' },
-      { name: 'ETF Mercado', pct: 8, color: '#ffd24a' },
-      { name: 'Energía + Materiales', pct: 6, color: '#f59e0b' },
-      { name: 'Bonos / Cash', pct: 5, color: '#8a97a8' },
+      { name: 'AI Networking', pct: 10, color: '#22c55e' },
+      { name: 'Market ETF', pct: 8, color: '#ffd24a' },
+      { name: 'Energy + Materials', pct: 6, color: '#f59e0b' },
+      { name: 'Bonds / Cash', pct: 5, color: '#8a97a8' },
     ],
     assets: [
-      ['NVDA', 'GPU e IA factories', 10], ['BTC', 'Reserva digital', 10], ['MSFT', 'IA empresarial y Cloud', 8],
-      ['AVGO', 'ASICs y networking IA', 8], ['QQQ', 'Tecnología USA', 8], ['AMZN', 'AWS + IA', 6], ['ANET', 'Data Centers IA', 6],
-      ['META', 'Datos + modelos IA', 5], ['TSM', 'Fabricación de chips', 5], ['COIN', 'Infraestructura crypto', 5],
-      ['ASML', 'Equipos EUV', 4], ['CRCL', 'Stablecoins', 4], ['GOOGL', 'DeepMind / Gemini', 3], ['XLU', 'Energía IA', 3],
-      ['AMD', 'GPU alternativa', 2], ['MRVL', 'Networking', 2], ['IGV', 'Software ETF', 2], ['SPY', 'Mercado general', 2],
-      ['TSLA', 'Robótica IA', 2], ['Bonos/Otros', 'Defensa y liquidez', 5],
+      ['NVDA', 'GPUs & AI factories', 10], ['BTC', 'Digital reserve', 10], ['MSFT', 'Enterprise AI & Cloud', 8],
+      ['AVGO', 'ASICs & AI networking', 8], ['QQQ', 'US tech', 8], ['AMZN', 'AWS + AI', 6], ['ANET', 'AI data centers', 6],
+      ['META', 'Data + AI models', 5], ['TSM', 'Chip manufacturing', 5], ['COIN', 'Crypto infrastructure', 5],
+      ['ASML', 'EUV equipment', 4], ['CRCL', 'Stablecoins', 4], ['GOOGL', 'DeepMind / Gemini', 3], ['XLU', 'AI energy', 3],
+      ['AMD', 'Alternative GPU', 2], ['MRVL', 'Networking', 2], ['IGV', 'Software ETF', 2], ['SPY', 'Broad market', 2],
+      ['TSLA', 'AI robotics', 2], ['Bonds/Other', 'Defense & liquidity', 5],
     ],
     scenarios: [
       { monthly: 500, aportado: '$180K', r: { 8: '$700K', 10: '$1.1M', 12: '$1.7M', 15: '$3.4M' } },
@@ -223,7 +223,7 @@ const Data = (() => {
     ],
   };
 
-  // ====================== DATOS DE EJEMPLO ======================
+  // ====================== SAMPLE DATA ======================
   function seed(db) {
     const id = () => Store.uid();
     db.meta.name = 'André';
@@ -233,7 +233,7 @@ const Data = (() => {
     db.plan = JSON.parse(JSON.stringify(PLAN));
     db.money = JSON.parse(JSON.stringify(MONEY));
 
-    // --- cuentas (números reales tipo Tradeify) ---
+    // --- accounts (real Tradeify-style numbers) ---
     const a1 = { id: id(), firm: 'tradeify', alias: 'TDFYSL50909144440', size: 50000, phase: 'payout', status: 'activa', createdAt: '2026-06-21' };
     const a2 = { id: id(), firm: 'tradeify', alias: 'TDFYSL50350052692', size: 50000, phase: 'payout', status: 'activa', createdAt: '2026-06-21' };
     const a3 = { id: id(), firm: 'tradeify', alias: 'TDFYSL50592331321', size: 50000, phase: 'payout', status: 'activa', createdAt: '2026-06-21' };
@@ -241,7 +241,7 @@ const Data = (() => {
     db.accounts = [a1, a2, a3, apex];
     const accIds = [a1.id, a2.id, a3.id];
 
-    // --- payouts (11 cobros = $10,500) ---
+    // --- payouts (11 cash-outs = $10,500) ---
     const P = (date, firm, acc, amount) => ({ id: id(), date, firm, accountId: acc, amount });
     db.payouts = [
       P('2026-04-09', 'apex', apex.id, 1200), P('2026-04-16', 'apex', apex.id, 1100),
@@ -251,7 +251,7 @@ const Data = (() => {
       P('2026-06-05', 'tradeify', a2.id, 1100), P('2026-06-12', 'tradeify', a2.id, 1000), P('2026-06-19', 'tradeify', a3.id, 900),
     ];
 
-    // --- 54 trades reales (Jun 21 +4.4K · 10W-15L ; Jun 22 +3.3K · 14W-15L) ---
+    // --- 54 sample trades (Jun 21 +4.4K · 10W-15L ; Jun 22 +3.3K · 14W-15L) ---
     let s = 20260621;
     const rng = () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
     const pick = arr => arr[Math.floor(rng() * arr.length)];
@@ -290,20 +290,20 @@ const Data = (() => {
     genDay('2026-06-21', 10, 15, 4400, 7400);
     genDay('2026-06-22', 14, 15, 3300, 7300);
 
-    // --- Cartera · gastos del mes (ejemplos, 100% editables) ---
+    // --- Wallet · monthly expenses (samples, 100% editable) ---
     db.goals = [];
     db.expenses = [
-      { id: id(), name: 'Renta', amount: 420, icon: 'home', color: '#5fd0ff' },
-      { id: id(), name: 'Comida', amount: 260, icon: 'wallet', color: '#7fb0ff' },
-      { id: id(), name: 'Coche (gas + seguro)', amount: 180, icon: 'car', color: '#ffd24a' },
-      { id: id(), name: 'Suscripciones', amount: 60, icon: 'star', color: '#22c55e' },
-      { id: id(), name: 'Salidas / gusto', amount: 140, icon: 'flame', color: '#a855f7' },
+      { id: id(), name: 'Rent', amount: 420, icon: 'home', color: '#5fd0ff' },
+      { id: id(), name: 'Food', amount: 260, icon: 'wallet', color: '#7fb0ff' },
+      { id: id(), name: 'Car (gas + insurance)', amount: 180, icon: 'car', color: '#ffd24a' },
+      { id: id(), name: 'Subscriptions', amount: 60, icon: 'star', color: '#22c55e' },
+      { id: id(), name: 'Going out / fun', amount: 140, icon: 'flame', color: '#a855f7' },
     ];
 
-    // --- bitácora + progreso del curso ---
+    // --- journal + course progress ---
     db.journal = [
-      { id: id(), date: '2026-06-22', tag: 'win', text: 'Semana +$7.7K en Tradeify. ORB limpio y W = stop. La constancia paga.' },
-      { id: id(), date: '2026-06-21', tag: 'leccion', text: '44% win rate pero profit factor 1.52: gano cuando acierto, corto rápido cuando no. Disciplina.' },
+      { id: id(), date: '2026-06-22', tag: 'win', text: 'Week +$7.7K on Tradeify. Clean ORB and W = stop. Consistency pays.' },
+      { id: id(), date: '2026-06-21', tag: 'leccion', text: '44% win rate but 1.52 profit factor: I win when I’m right, cut fast when I’m not. Discipline.' },
     ];
     db.progress = { l01: true, l02: true, l03: true, l04: true, l11: true, l12: true };
   }

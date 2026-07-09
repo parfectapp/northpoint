@@ -10,6 +10,7 @@ const App = (() => {
 
   const NAV = [
     { r: 'inicio', ic: 'home', label: 'Home' },
+    { r: 'rutina', ic: 'flag', label: 'Rutina' },
     { r: 'academia', ic: 'academy', label: 'Academy', alias: ['lesson'] },
     { group: 'JOURNAL' },
     { r: 'dashboard', ic: 'grid', label: 'Dashboard' },
@@ -18,7 +19,7 @@ const App = (() => {
     { r: 'calendario', ic: 'cal', label: 'Calendar' },
     { r: 'cuentas', ic: 'building', label: 'Accounts' },
   ];
-  const TITLES = { inicio: 'Home', academia: 'Academy', lesson: 'Academy', dashboard: 'Journal · Dashboard', trades: 'Trades', coach: 'Coach · Your trading analysis', calendario: 'Calendar', cuentas: 'Accounts', snowball: 'Snowball · Money Management', cartera: 'Wallet', plan: 'Plan & Discipline' };
+  const TITLES = { inicio: 'Home', rutina: 'Rutina · Co-piloto de sesión', academia: 'Academy', lesson: 'Academy', dashboard: 'Journal · Dashboard', trades: 'Trades', coach: 'Coach · Your trading analysis', calendario: 'Calendar', cuentas: 'Accounts', snowball: 'Snowball · Money Management', cartera: 'Wallet', plan: 'Plan & Discipline' };
 
   function sidebar() {
     const name = db.meta.name || 'Trader';
@@ -73,6 +74,7 @@ const App = (() => {
         <div class="sb-scrim ${state.sidebar ? 'on' : ''}" data-act="toggleSidebar"></div>
       </div>`;
     if (typeof Media !== 'undefined') Media.hydrate(root);
+    if (route === 'rutina' && window.RutinaCtrl) window.RutinaCtrl.hydrate();
   }
 
   // ---- field readers ----
@@ -204,6 +206,60 @@ const App = (() => {
       } catch (e) { UI.toast('Sync failed: ' + e.message); }
     },
     disconnectTradovate() { db.sync = null; save(); UI.closeSheet(); UI.toast('Tradovate disconnected'); render(); },
+
+    /* ---- TradingView · webhook auto-sync (Pine strategy → Cloudflare Worker → here) ---- */
+    connectTradingView: () => UI.sheet(`
+      <div class="sheet-head"><div class="h2">${UI.icon('sync', '', 18)} Connect TradingView</div>
+        <div class="muted small">Auto-import your strategy's closed trades via webhook.</div></div>
+      <div class="form">
+        ${Forms.field('Bridge URL', Forms.input('tv-url', db.tvsync?.url || '', 'https://northpoint-bridge.YOURNAME.workers.dev'), 'Your Cloudflare Worker — see northpoint-bridge/README.md')}
+        ${Forms.field('Secret', Forms.input('tv-secret', db.tvsync?.secret || '', 'the same secret as in the Pine script'))}
+        <button class="btn btn-primary full" data-act="doConnectTV">Connect &amp; sync</button>
+      </div>
+      ${db.tvsync?.url ? `<div class="setlist mt12">
+        <button class="setrow2" data-act="syncTV">${UI.icon('sync', '', 18)} <span>Sync now${db.tvsync.lastSync ? ' · ' + new Date(db.tvsync.lastSync).toLocaleString() : ''}</span></button>
+        <button class="setrow2 danger" data-act="disconnectTV">${UI.icon('x', '', 18)} <span>Disconnect</span></button></div>` : ''}
+      <p class="muted small mt12">Use the SAME <b>Secret</b> in your Pine script and your Worker. TradingView posts each closed trade → your Worker → here. Note: webhook alerts need a paid TradingView plan.</p>`),
+    async doConnectTV() {
+      const url = val('tv-url').replace(/\/+$/, ''); const secret = val('tv-secret');
+      if (!url || !secret) return UI.toast('Enter the Bridge URL and Secret');
+      db.tvsync = { url, secret, lastSync: db.tvsync?.lastSync || '' }; save(); await A.syncTV();
+    },
+    async syncTV() {
+      if (!db.tvsync?.url) return UI.toast('Connect TradingView first');
+      UI.toast('Syncing…');
+      try {
+        const r = await fetch(db.tvsync.url + '/api/trades?session=' + encodeURIComponent(db.tvsync.secret));
+        const d = await r.json(); if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+        let acc = db.accounts.find(a => a.alias === 'TradingView');
+        if (!acc) { acc = { id: Store.uid(), firm: 'tradeify', alias: 'TradingView', size: 50000, phase: 'funded', status: 'activa', createdAt: UI.todayISO() }; db.accounts.push(acc); }
+        const have = new Set(db.trades.map(t => t.extId).filter(Boolean));
+        let added = 0;
+        (d.trades || []).forEach(t => { if (t.extId && have.has(t.extId)) return; db.trades.push({ id: Store.uid(), accountId: acc.id, ...t }); added++; });
+        db.tvsync.lastSync = new Date().toISOString(); save(); UI.closeSheet(); render();
+        UI.toast(added ? `${added} trade(s) synced from TradingView` : "You're up to date");
+      } catch (e) { UI.toast('Sync failed: ' + e.message); }
+    },
+    disconnectTV() { db.tvsync = null; save(); UI.closeSheet(); UI.toast('TradingView disconnected'); render(); },
+    /* ---- Rutina de sesión (Jarvis co-piloto) ---- */
+    rutinaBias:         el => window.RutinaCtrl?.setBias(el.dataset.v),
+    rutinaRule:         el => window.RutinaCtrl?.toggleRule(el.dataset.id),
+    rutinaGoPhase:      el => window.RutinaCtrl?.goPhase(el.dataset.p),
+    rutinaStartSession:  () => window.RutinaCtrl?.startSession(),
+    rutinaSetORB:        () => window.RutinaCtrl?.setORB(),
+    rutinaAddTrade:      () => window.RutinaCtrl?.addTrade(),
+    rutinaCloseSession:  () => window.RutinaCtrl?.closeSession(),
+    rutinaSaveJournal:   () => window.RutinaCtrl?.saveJournal(),
+    rutinaReset:         () => window.RutinaCtrl?.reset(),
+    rutinaVoice:         () => window.RutinaCtrl?.welcome(),
+    rutinaObsConnect() {
+      const h  = (document.getElementById('obs-host')?.value || 'localhost').trim();
+      const p  = parseInt(document.getElementById('obs-port')?.value || '4455');
+      const pw = document.getElementById('obs-pass')?.value || '';
+      window.RutinaCtrl?.obsConnect(h, p, pw);
+    },
+    rutinaCopyClips:     () => window.RutinaCtrl?.copyClipTimestamps(),
+
     go: el => go(el.dataset.route),
     seeLanding: () => go('landing'),
     openDiscord: () => { try { window.open('https://discord.gg/', '_blank', 'noopener'); } catch (e) {} },

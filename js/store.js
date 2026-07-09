@@ -15,6 +15,7 @@ const Store = (() => {
     progress: {},   // { lessonId: true } — lecciones del curso completadas
     money: null,    // Snowball · money management (se siembra de Data.MONEY)
     sync: null,     // conexión Tradovate { backendUrl, session, lastSync }
+    tvsync: null,   // conexión TradingView webhook { url, secret, lastSync }
   });
 
   function load() {

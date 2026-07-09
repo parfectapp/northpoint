@@ -41,6 +41,7 @@ window.Views = window.Views || {};
       <div class="form">${Forms.field('Your name', Forms.input('set-name', d.meta.name, 'Your name'))}<button class="btn btn-ghost full" data-act="saveName">Save name</button></div>
       <div class="setlist">
         <button class="setrow2" data-act="connectTradovate">${UI.icon('plug', '', 18)} <span>Connect Tradovate (live sync)${d.sync?.session ? ' · connected' : ''}</span></button>
+        <button class="setrow2" data-act="connectTradingView">${UI.icon('sync', '', 18)} <span>Connect TradingView (auto-sync)${d.tvsync?.url ? ' · connected' : ''}</span></button>
         <button class="setrow2" data-act="exportCSV">${UI.icon('download', '', 18)} <span>Export trades to Excel (.csv)</span></button>
         <button class="setrow2" data-act="exportData">${UI.icon('share', '', 18)} <span>Back up my data (.json)</span></button>
         <button class="setrow2" data-act="seeLanding">${UI.icon('gift', '', 18)} <span>View course page</span></button>

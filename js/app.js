@@ -499,7 +499,18 @@ const App = (() => {
   });
 
   function applyTheme() { document.documentElement.setAttribute('data-theme', 'dark'); } // always dark (to match the landing)
-  function boot() { applyTheme(); render(); }
+  function boot() {
+    applyTheme();
+    try {
+      var pv = new URLSearchParams(location.search).get('preview');
+      if (pv) {
+        var map = { dashboard:'dashboard', journal:'dashboard', coach:'coach', academia:'academia', academy:'academia' };
+        db = Store.empty(); Data.seed(db); db.meta.onboarded = true; state.unlocked = true; state.period = UI.todayKey();
+        route = map[pv] || 'dashboard';
+      }
+    } catch (e) {}
+    render();
+  }
   document.addEventListener('DOMContentLoaded', boot);
   if (document.readyState !== 'loading') boot();
 
